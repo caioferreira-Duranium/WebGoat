@@ -68,10 +68,14 @@
     <!-- do not update necessary for lesson -->
     <checkstyle.version>3.6.0</checkstyle.version>
     <commons-collections.version>3.2.1</commons-collections.version>
-    <commons-compress.version>1.28.0</commons-compress.version>
+    <!-- CVE-2019-12402 / CVE-2018-1000632 (zip-slip) - intentionally pinned old, see org.owasp.webgoat.api -->
+    <commons-compress.version>1.19</commons-compress.version>
     <commons-io.version>2.20.0</commons-io.version>
     <commons-lang3.version>3.14.0</commons-lang3.version>
-    <commons-text.version>1.14.0</commons-text.version>
+    <!-- CVE-2022-42889 (Text4Shell) - intentionally pinned old, see org.owasp.webgoat.api -->
+    <commons-text.version>1.9</commons-text.version>
+    <!-- CVE-2017-18349 and later fastjson autotype RCEs - added for SCA test coverage, not used by app code -->
+    <fastjson.version>1.2.24</fastjson.version>
     <guava.version>33.5.0-jre</guava.version>
     <jacoco.version>0.8.11</jacoco.version>
     <java.version>25</java.version>
@@ -108,6 +112,8 @@
     <xstream.version>1.4.5</xstream.version>
     <!-- do not update necessary for lesson -->
     <zxcvbn.version>1.9.0</zxcvbn.version>
+    <!-- CVE-2022-1471 (SnakeYAML deserialization RCE) - added for SCA test coverage, not used by app code -->
+    <snakeyaml.version>1.26</snakeyaml.version>
   </properties>
 
   <dependencyManagement>
@@ -223,6 +229,21 @@
         <groupId>com.microsoft.playwright</groupId>
         <artifactId>playwright</artifactId>
         <version>1.55.0</version>
+      </dependency>
+      <!-- Intentionally vulnerable dependencies kept for ClearFlow SCA test coverage. -->
+      <!-- Not referenced by application code; detected by source/manifest scanning only. -->
+      <!-- NOTE: org.apache.logging.log4j:log4j-core is deliberately NOT added here: the -->
+      <!-- restrict-log4j-versions enforcer rule below already bans it outright, which is -->
+      <!-- itself a valid (and stronger) control to exercise. -->
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+        <version>${fastjson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.yaml</groupId>
+        <artifactId>snakeyaml</artifactId>
+        <version>${snakeyaml.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -404,6 +425,16 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-properties-migrator</artifactId>
       <scope>runtime</scope>
+    </dependency>
+    <!-- Intentionally vulnerable dependencies kept for ClearFlow SCA test coverage. -->
+    <!-- Not referenced by application code; detected by source/manifest scanning only. -->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
     </dependency>
   </dependencies>
 
